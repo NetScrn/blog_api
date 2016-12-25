@@ -19,10 +19,11 @@ ActiveRecord::Schema.define(version: 20161225095443) do
     t.string   "title"
     t.string   "content"
     t.string   "author_ip"
-    t.integer  "user_id"
+    t.integer  "author_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_posts_on_user_id", using: :btree
+    t.index ["author_id"], name: "index_posts_on_author_id", using: :btree
+    t.index ["author_ip"], name: "index_posts_on_author_ip", using: :btree
   end
 
   create_table "ratings", force: :cascade do |t|
@@ -39,6 +40,6 @@ ActiveRecord::Schema.define(version: 20161225095443) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "posts", "users"
+  add_foreign_key "posts", "users", column: "author_id"
   add_foreign_key "ratings", "posts"
 end

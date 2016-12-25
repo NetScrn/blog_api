@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :post, only: :create do
+  resources :posts, only: :create do
     post :rate, as: :member
     collection do
       get :top_ave
