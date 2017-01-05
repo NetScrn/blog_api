@@ -1,5 +1,5 @@
 class PostCreator
-  attr_accessor :post, :errors
+  attr_reader :post, :errors
 
   def self.build(params)
     login = params.delete(:author_login)

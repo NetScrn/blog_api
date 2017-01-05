@@ -1,4 +1,7 @@
 class PostsController < ApplicationController
+  rescue_from 'ActiveRecord::RecordNotFound' do
+    render json: {errors: {post: 'Not found'}}, status: :not_found
+  end
 
   def create
     @creator = PostCreator.build(post_params)
@@ -10,7 +13,12 @@ class PostsController < ApplicationController
   end
 
   def rate
-
+    @rater = PostRater.build(params[:post_id], params[:value])
+    if @rater.save
+      render json: {post_average_rating: @rater.ave}, status: :ok
+    else
+      render json: {errors: @rater.errors}, status: :unprocessable_entity
+    end
   end
 
   def top_ave
