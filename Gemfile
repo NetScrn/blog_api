@@ -4,6 +4,8 @@ gem 'rails', '~> 5.0.1'
 gem 'puma', '~> 3.0'
 gem 'jbuilder', '~> 2.5'
 gem 'pg', '~> 0.18'
+gem 'delayed_job_active_record'
+gem 'daemons'
 
 group :development, :test do
   gem 'byebug', platform: :mri

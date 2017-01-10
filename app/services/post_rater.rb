@@ -22,6 +22,7 @@ class PostRater
     else
       @post.ratings.create(value: @value)
       @ave = @post.ratings.average(:value)
+      PostAveCountUpdateJob.perform_later @post, @ave
     end
   end
 end

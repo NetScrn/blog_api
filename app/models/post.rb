@@ -6,28 +6,29 @@ class Post < ApplicationRecord
   validates :content, presence: true
 
   TOP_AVE_POSTS_QUERY = <<-SQL
-    SELECT
-      title,
-      content
-    FROM
-      posts
+    SELECT id, title, content
+    FROM posts
     WHERE
       id IN (
-        SELECT
-          p.id
-        FROM
-          posts p
+        SELECT p.id
+        FROM posts p
         JOIN ratings r ON r.post_id = p.id
-        GROUP BY
-          p.id
-        ORDER BY
-          AVG(r.value) DESC
+        GROUP BY p.id
+        ORDER BY AVG(r.value) DESC
         LIMIT(?)
       )
   SQL
 
+  def reset_ave_cache
+    update_attribute(:ave_cache, ratings.average(:value))
+  end
+
+  def self.reset_all_ave_cache
+    Post.all.each { |post| post.reset_ave_cache }
+  end
+
   def self.top_ave(amount, q_method = nil)
-    if q_method == :ave_cache
+    if q_method == "ave_cache"
       extract_top_ave_posts_ave_cache(amount)
     else
       extract_top_ave_posts_sql(amount)
@@ -36,7 +37,7 @@ class Post < ApplicationRecord
 
   private
   def self.extract_top_ave_posts_ave_cache(amount)
-    # todo
+    Post.select(:id, :title, :content).order(ave_cache: :desc).limit(amount)
   end
 
   def self.extract_top_ave_posts_sql(amount)
