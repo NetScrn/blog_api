@@ -1,5 +1,5 @@
 class PostRater
-  attr_reader :post, :value, :errors, :ave
+  attr_reader :errors, :ave
 
   def self.build(post_id, value)
     post = Post.find(post_id)

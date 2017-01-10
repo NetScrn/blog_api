@@ -22,7 +22,8 @@ class PostsController < ApplicationController
   end
 
   def top_ave
-
+    @top_ave_posts = Post.top_ave(params[:amount], params[:q_method])
+    render template: 'posts/top_ave', status: :ok
   end
 
   def dup_ips
