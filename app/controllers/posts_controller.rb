@@ -27,7 +27,8 @@ class PostsController < ApplicationController
   end
 
   def dup_ips
-
+    @ips_used_by_multiple_users = Post.ips_used_by_multiple_users
+    render json: @ips_used_by_multiple_users, status: :ok
   end
 
   private
