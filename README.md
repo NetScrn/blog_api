@@ -7,18 +7,20 @@
 5. Запрос на пересекающиеся айпишники будет неизбежно тормозить при большом количестве данных. Метод Post.ips_used_by_multiple_users к слову вообще падает с ошибкой, как и спеки на него)))
 6. Нет задания по SQL.
 
-1 - ✓
+---
 
-2 - ✓ job removed
+1. ✓
 
-3 - sorry
+2. ✓ job removed
 
-4 - query removed
+3. sorry
 
-5 - todo
+4. query removed
+
+5. todo
 (не написал _spec.rb в конце спека и незаметил что он падает после изменений, когда выполнял `rspec`)
 
-6 - todo
+6. todo
 
 
 ## Разработчик №2
@@ -31,19 +33,35 @@
 7. запрос IPS_USED_BY_MULTIPLE_USERS_QUERY мог бы иметь в хевинге count(*)>1
 8. Логику аггрегации данных по постам можно было бы поместить в сервис, а в модели оставить только то, что связано с постом
 
-1 - 
+---
+
+1. include ActiveModel::Validations - показалось неудобным
 > В коде желательно не использовать рельсовых антипаттернов типа колбеков и валидаций в моделях
 
-2 - job removed
+2. job removed
 
-3 - job removed
+3. job removed
 
-4 - job removed
+4. job removed
 
-5 - не написал _spec.rb в конце спека и незаметил что он падает после изменений, когда выполнял `rspec`
+5. не написал _spec.rb в конце спека и незаметил что он падает после изменений, когда выполнял `rspec`
 
-6 - query removed, noted
+6. query removed
 
-7 - ✓
+7. ✓
 
-8 - todo
+8. ✓
+
+## SQL
+
+`SELECT
+   group_id, 
+   count(*) count, 
+   min(users.id) min_user_id_in_group
+ FROM users
+ GROUP BY group_id
+ ORDER BY group_id;`
+ 
+ Непонял что занчит: выделить непрерывные группы по group_id с учетом указанного порядка записей (их 4)
+ 
+ 
