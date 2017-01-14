@@ -2,44 +2,39 @@ class PostCreator
   attr_reader :post, :errors
 
   def self.build(params)
-    errors = validate(params)
-    return new(nil, errors) if errors.any?
-
-    login = params.delete(:author_login)
-    user = get_user(login)
-    post = Post.new(params)
-    # if ip should be taken from request
-    # post.author_ip = request.remote_ip
-    post.author = user
-    new(post)
+    new(params)
   end
 
-  def initialize(post, errors = {})
-    @post = post
-    @errors = errors
+  def initialize(params)
+    @user_login = params.delete(:author_login)
+    @post_attrs = params
+    @errors = {}
   end
 
   def save
+    @post = Post.new(@post_attrs)
+    @post.author = get_user(@user_login)
+    validate
     errors.any? ? false : post.save
   end
 
   private
   # return nil if login invalid, return user if it exists else create and return new user
-  def self.get_user(login)
-    user = User.find_by(login: login)
-    !user ? User.new(login: login) : user
+  def get_user(login)
+    user = User.find_by(login: login) unless login.blank?
+    user ? user : User.new(login: login)
   end
 
-  def self.validate(params)
-    {}.tap do |errors|
-      errors.update({author: {login: ["can't be blank"]}}) if params[:author_login].blank?
-      if params[:title].blank? && params[:content].blank?
-        errors.update({post: {title: ["can't be blank"], content: ["can't be blank"]}})
-      elsif params[:title].blank?
-        errors.update({post: {title: ["can't be blank"]}})
-      elsif params[:content].blank?
-        errors.update({post: {content: ["can't be blank"]}})
-      end
+  def validate
+    # User validation
+    @errors.update({author: {login: ["can't be blank"]}}) if @user_login.blank?
+    # Post validation
+    if @post_attrs[:title].blank? && @post_attrs[:content].blank?
+      @errors.update({post: {title: ["can't be blank"], content: ["can't be blank"]}})
+    elsif @post_attrs[:title].blank?
+      @errors.update({post: {title: ["can't be blank"]}})
+    elsif @post_attrs[:content].blank?
+      @errors.update({post: {content: ["can't be blank"]}})
     end
   end
 end

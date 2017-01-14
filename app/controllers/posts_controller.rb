@@ -22,7 +22,7 @@ class PostsController < ApplicationController
   end
 
   def top_ave
-    @top_ave_posts = Post.top_ave(params[:amount], params[:q_method])
+    @top_ave_posts = Post.top_ave(params[:amount])
     render template: 'posts/top_ave', status: :ok
   end
 

@@ -3,7 +3,6 @@ module BlogPostRequestHelpers
     post "/posts/#{blog_post.id}/rate",
          params: { value: value },
          headers: { 'ACCEPT' => 'application/json' }
-    PostAveCountUpdateJob.perform_now(blog_post, value)
   end
 end
 
