@@ -55,14 +55,9 @@
 
 ## SQL
 
-`SELECT
-   group_id, 
-   count(*) count, 
-   min(users.id) min_user_id_in_group
- FROM users
- GROUP BY group_id
- ORDER BY group_id;`
- 
- Непонял что занчит: выделить непрерывные группы по group_id с учетом указанного порядка записей (их 4)
- 
- 
+sql_assignment.sql
+
+На самом деле у меня не глубокие познания в SQL поэтому до того как я прочтиал:
+(https://www.postgresql.org/docs/current/static/tutorial-window.html)
+(https://explainextended.com/2011/02/18/things-sql-needs-series/)
+я не представлял как выполнить задание.
