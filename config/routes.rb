@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :posts, only: :create do
-    post :rate, as: :member
+    post :rate
     collection do
       get :top_ave
       get :dup_ips

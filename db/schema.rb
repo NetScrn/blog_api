@@ -10,24 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170110141358) do
+ActiveRecord::Schema.define(version: 20170115043205) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "delayed_jobs", force: :cascade do |t|
-    t.integer  "priority",   default: 0, null: false
-    t.integer  "attempts",   default: 0, null: false
-    t.text     "handler",                null: false
-    t.text     "last_error"
-    t.datetime "run_at"
-    t.datetime "locked_at"
-    t.datetime "failed_at"
-    t.string   "locked_by"
-    t.string   "queue"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+  create_table "ips_logins", force: :cascade do |t|
+    t.string  "ip"
+    t.string  "login"
+    t.integer "post_id"
+    t.index ["post_id"], name: "index_ips_logins_on_post_id", using: :btree
   end
 
   create_table "posts", force: :cascade do |t|
@@ -35,11 +27,13 @@ ActiveRecord::Schema.define(version: 20170110141358) do
     t.string   "content"
     t.string   "author_ip"
     t.integer  "author_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
     t.float    "ave_cache"
+    t.string   "author_login"
     t.index ["author_id"], name: "index_posts_on_author_id", using: :btree
     t.index ["author_ip"], name: "index_posts_on_author_ip", using: :btree
+    t.index ["author_login"], name: "index_posts_on_author_login", using: :btree
     t.index ["ave_cache"], name: "index_posts_on_ave_cache", using: :btree
   end
 
@@ -58,6 +52,7 @@ ActiveRecord::Schema.define(version: 20170110141358) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "ips_logins", "posts"
   add_foreign_key "posts", "users", column: "author_id"
   add_foreign_key "ratings", "posts"
 end

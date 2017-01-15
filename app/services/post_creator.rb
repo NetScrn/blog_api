@@ -15,7 +15,12 @@ class PostCreator
     @post = Post.new(@post_attrs)
     @post.author = get_user(@user_login)
     validate
-    errors.any? ? false : post.save
+    if errors.any?
+      false
+    else
+      post.save
+      IpUsersListController.add_ip_login_pair(post, @user_login)
+    end
   end
 
   private
